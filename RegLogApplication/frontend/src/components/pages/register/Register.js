@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Alert from '../alert/alert'
 import './register.css';
 
 const Register = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     username: '',
     password: '',
     email: '',
@@ -16,7 +17,12 @@ const Register = () => {
     city: '',
     state: '',
     country: '',
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,11 +34,22 @@ const Register = () => {
 
     try {
       await axios.post('http://localhost:5000/api/register', formData);
-      console.log('User registered successfully');
+      setSuccessMessage('User registered successfully');
+      setErrorMessage('');
+      setFormData(initialFormData); // Reset the form data
+      setShowAlert(true);
     } catch (error) {
       console.error('Registration failed:', error.response?.data?.error || 'Unknown error');
+      setErrorMessage(error.response?.data?.error || 'Unknown error');
+      setSuccessMessage('');
+      setShowAlert(true);
     }
   };
+
+  const closeAlert = () => {
+    setShowAlert(false);
+  };
+
 
   return (
     <div className="register-container">
@@ -117,6 +134,10 @@ const Register = () => {
           <label>Country:</label>
           <input type="text" name="country" value={formData.country} onChange={handleChange} required />
         </div>
+
+        {showAlert && (
+          <Alert message={successMessage || errorMessage} onClose={closeAlert} />
+        )}
 
         <button type="submit">Register</button>
       </form>

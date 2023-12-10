@@ -1,13 +1,18 @@
-// src/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import Alert from '../alert/alert'; // Import the Alert component
 import './login.css';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     username: '',
     password: '',
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,17 +23,22 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Make a POST request to the login API
       const response = await axios.post('http://localhost:5000/api/login', formData);
-      
-      // Assuming the API returns a token upon successful login
       const { token } = response.data;
-      
-      // Do something with the token, such as storing it in local storage or state
       console.log('Login successful. Token:', token);
+      setSuccessMessage('User login successfully');
+      setErrorMessage('');
+      setFormData(initialFormData); // Reset the form data
+      setShowAlert(true);
     } catch (error) {
       console.error('Login failed:', error.response?.data?.error || 'Unknown error');
+      setErrorMessage(error.response?.data?.error || 'Unknown error');
+      setShowAlert(true);
     }
+  };
+
+  const closeAlert = () => {
+    setShowAlert(false);
   };
 
   return (
@@ -44,6 +54,10 @@ const Login = () => {
           <label>Password:</label>
           <input type="password" name="password" value={formData.password} onChange={handleChange} required />
         </div>
+
+        {showAlert && (
+          <Alert message={successMessage || errorMessage} onClose={closeAlert} />
+        )}
 
         <button type="submit">Login</button>
       </form>
