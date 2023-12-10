@@ -1,13 +1,20 @@
+// src/App.js
+import React, { useState } from 'react';
+import Home from './components/pages/home/home';
 import './App.css';
-import Register from './components/pages/register/Register';
 
-function App() {
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('home');
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
-    <>
-      <h1>Hello Vikram</h1>
-      <Register/>
-    </>
+    <div className="app">
+      <Home currentPage={currentPage} onPageChange={handlePageChange} />
+    </div>
   );
-}
+};
 
 export default App;

@@ -1,7 +1,6 @@
-// src/Register.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import './register.css'
+import './register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +27,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await axios.post('http://your-api-url/api/register', formData);
+      await axios.post('http://localhost:5000/api/register', formData);
       console.log('User registered successfully');
     } catch (error) {
       console.error('Registration failed:', error.response?.data?.error || 'Unknown error');

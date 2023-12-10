@@ -1,0 +1,30 @@
+/* src/components/Navbar.css */
+.navbar {
+  background-color: #f8f9fa;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.navbar li {
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.auth-links {
+  display: flex;
+  align-items: center;
+}
+
+.signup-link,
+.login-link {
+  margin-left: 20px;
+  cursor: pointer;
+}
